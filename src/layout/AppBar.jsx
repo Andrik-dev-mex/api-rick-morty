@@ -5,7 +5,7 @@ import { Typography } from '@material-ui/core';
 
 function Appbar() {
 	return (
-		<AppBar>
+		<AppBar position ="static">
 			<ToolBar>
 				<Typography variant="h6">
 					Rick and Morty Characters

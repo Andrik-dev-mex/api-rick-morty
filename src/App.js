@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: "wrap",
     justifyContent: "center",
     paddingTop : 10,
-    marginRight : 40,
-    marginLeft: 40,
+    marginRight : 20,
+    marginLeft: 20,
     "& > *": {
       margin: theme.spacing(1),
     },
   },
 }));
 
-function App(props) {
+function App() {
   const classes = useStyles();
 
   const [characters, setCharacters] = useState([]);
@@ -40,18 +40,19 @@ function App(props) {
       <AppBar />
       <div className={classes.root}>
         <Paper elevation={0} className = {classes.root}>
-          {characters.map((character, index) => {
+          {characters.map((character) => {
             return(
               <TarjetaPersonaje
-              key = {index}
-              index = {character.id}
+              key = {character.id}
               id={character.id}
               name={character.name}
               status={character.status}
               species={character.species}
               gender={character.gender}
+              location = {character.location.name}
               image={character.image}
-            />) })}
+            />
+            )})}
         </Paper>
       </div>
     </div>

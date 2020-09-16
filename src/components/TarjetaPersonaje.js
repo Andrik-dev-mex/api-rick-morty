@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -7,17 +7,17 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import Brightness1Icon from '@material-ui/icons/Brightness1';
-
+import ThumbUpAltIcon from "@material-ui/icons/ThumbUpAlt";
+import Brightness1Icon from "@material-ui/icons/Brightness1";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
     maxWidth: 500,
     height: 435,
     width: 300,
-    textAlign: "left"
-    },
+    textAlign: "left",
+  },
   media: {
     height: 150,
   },
@@ -36,11 +36,11 @@ const TarjetaPersonaje = ({
   const classes = useStyles();
 
   const [like, setLike] = useState(0);
-  
+
   let color = () => {
-    if(status === "Alive"){
+    if (status === "Alive") {
       return "green";
-    } else if (status === "Dead"){
+    } else if (status === "Dead") {
       return "red";
     } else {
       return "";
@@ -56,35 +56,39 @@ const TarjetaPersonaje = ({
             {name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            <Brightness1Icon
-              style = {{color: color(), fontSize : 10 + "px"}}
-            /> 
+            <Brightness1Icon style={{ color: color(), fontSize: 10 + "px" }} />
             {status}-{species}
           </Typography>
-          <Typography variant = "h5" component = "h1">
+          <Typography variant="h5" component="h1">
             Gender
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             {gender}
           </Typography>
-          <Typography variant = "h5" component = "h1">
+          <Typography variant="h5" component="h1">
             Location
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {location}  
+            {location}
           </Typography>
         </CardContent>
         <CardActions>
-          <Button 
-            variant = "contained"
-            color = "secondary"
-            onClick = {() => {setLike(like + 1)}}>
-            Me Gusta
+          <Button variant="contained" color="secondary">
+            <Link
+              to={`/episodes/${id}`}
+              style={{ textDecoration: "none ", color: "white" }}
+            >
+              Episodios
+            </Link>
           </Button>
-          <Button>
-            <ThumbUpAltIcon/> + {like}
+          <Button
+            onClick={() => {
+              setLike(like + 1);
+            }}
+          >
+            <ThumbUpAltIcon /> + {like}
           </Button>
-        </CardActions>     
+        </CardActions>
       </CardActionArea>
     </Card>
   );

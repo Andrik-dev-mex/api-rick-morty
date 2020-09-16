@@ -57,8 +57,7 @@ const TarjetaPersonaje = ({
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
             <Brightness1Icon
-              style = {{color: color() }}
-              fontSize = "small"
+              style = {{color: color(), fontSize : 10 + "px"}}
             /> 
             {status}-{species}
           </Typography>

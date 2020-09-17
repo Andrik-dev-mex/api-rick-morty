@@ -9,75 +9,84 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import AxiosClient from "../config/axiosClient";
+import TableData from "./TableData";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   table: {
     minWidth: 650,
   },
-});
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(5),
+    },
+  },
+}));
 
 const Episodes = (props) => {
   const classes = useStyles();
-  const {id} = props.match.params;
-  const [characterEpisodes, setCharacterEpisodes] = useState({episodes: []});
+  const { id } = props.match.params;
+  const [epi, setEpi] = useState({ episodes: [] });
   const [urlEpisodes, setUrlEpisodes] = useState([]);
-  
-  let {episodes} = characterEpisodes;
+  let { episodes } = epi;
 
   useEffect(() => {
     const getUrls = (id) => {
-      AxiosClient.get(`/character/${id}`)
-      .then(res => {
+      AxiosClient.get(`/character/${id}`).then((res) => {
         setUrlEpisodes(res.data.episode);
-      })
+      });
     };
 
     getUrls(id);
-  },[id]);
+  }, [id]);
 
   useEffect(() => {
-    
-    const getEpisodes = () => { 
-      urlEpisodes.forEach(url => { 
-        axios.get(url)
-        .then(res => {episodes.push(res.data)});
-      });
-      
-    };
-    setCharacterEpisodes({episodes:episodes});
-    getEpisodes();
-    
-  }, [urlEpisodes, episodes]);
+    const getEpisodes = async (url) => {
+      const response = await axios.get(url);
+      episodes.push(response.data);
 
-  console.log(characterEpisodes);
+      setEpi({ episodes: episodes });
+    };
+
+    urlEpisodes.forEach((url) => {
+      getEpisodes(url);
+    });
+  }, [episodes, urlEpisodes]);
+
+  console.log(epi.episodes);
+
+  const renderData = () => {
+    return (
+      <TableBody>
+        {epi.episodes.map((episode) => (
+          <TableData
+            name={episode.name}
+            air_date={episode.air_date}
+            id={episode.id}
+            episode={episode.episode}
+          />
+        ))}
+      </TableBody>
+    );
+  };
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>#</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Air Date</TableCell>
-            <TableCell align="right">Episode</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-        {characterEpisodes.episodes.map((episode) => {
-          return(
-            <TableRow key={episode.id}>
-              <TableCell component="th" scope="row">
-                {episode.id}
-              </TableCell>
-              <TableCell align="right">{episode.name}</TableCell>
-              <TableCell align="right">{episode.air_date}</TableCell>
-              <TableCell align="right">{episode.episode}</TableCell>
+    <div className={classes.root}>
+      <TableContainer component={Paper}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell align="rigth">#</TableCell>
+              <TableCell align="rigth">Name</TableCell>
+              <TableCell align="rigth">Air Date</TableCell>
+              <TableCell align="rigth">Episode</TableCell>
             </TableRow>
-          )
-        })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          {renderData()}
+        </Table>
+      </TableContainer>
+    </div>
   );
 };
 

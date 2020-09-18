@@ -78,7 +78,7 @@ const TarjetaPersonaje = ({
               to={`/episodes/${id}`}
               style={{ textDecoration: "none ", color: "white" }}
             >
-              Episodios
+              Episodes
             </Link>
           </Button>
           <Button

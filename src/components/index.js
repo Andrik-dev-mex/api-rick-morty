@@ -26,13 +26,14 @@ function App(props) {
   const classes = useStyles();
 
   const [characters, setCharacters] = useState([]);
-
+  const [totalCharacters, setTotalCharacters] = useState({num: Number}) 
   const [page, setPage] = useState(1);
 
   useEffect(() => {
     const getCharacters = () => {
       AxiosClient.get(`/character/?page=${page}`).then((res) => {
         setCharacters(res.data.results);
+        setTotalCharacters({num : res.data.info.count})
       });
     };
 
@@ -42,6 +43,7 @@ function App(props) {
   return (
     <div>
       <div className={classes.root}>
+      <Typography variant = "h6">Total Characters: {totalCharacters.num}</Typography>
         <Paper elevation={0} className={classes.root}>
           {characters.map((character) => {
             return (
